@@ -33,14 +33,10 @@ ppd_slot_demo_body_gunmod{
   animchar__res:t="ppd_3438_box_char"
   animchar__updatable:b=no
   slot_attach__calcAnim:b=no
-  slot_attach__visible:b=yes
-  animchar_render__enabled:b=yes
   slot_attach__slotName:t="bayonet"
-  gunAttachable__slotName:t="bayonet"
   gunAttachable__gunSlotName:t="legacy_body"
   gunAttachable__slotTag:t="ppd_body"
   slot_attach__rotTm:m=[[1, 0, 0] [0, 1, 0] [0, 0, 1] [-0.0004056990147, 0.587642312, -0.01586997509]]
-  "gunAttachable:tag"{}
   "disableDMParts:list<t>"{
     part:t="ammo_mesh"
   }

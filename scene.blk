@@ -4,9 +4,8 @@ import{
 }
 
 entity{
-  _template:t="ppd_slot_demo_gun_item+item_in_world+visibility_traceable_item+ui_visible+disable_update+gun_with_initial_ammo"
+  _template:t="ppd_slot_demo_gun_item+item_in_world+visibility_traceable_item+ui_visible+gun_with_initial_ammo"
   transform:m=[[-0.0641654, -0.00515917, 0.997924] [-0.859436, 0.508527, -0.0526318] [-0.5072, -0.861029, -0.0370639] [-548.5, 11.21, 151.0]]
-  animchar__updatable:b=no
   "gun__initialAmmoHoldersCount:list<i>"{
     item:i=6
   }
