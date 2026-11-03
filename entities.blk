@@ -1,0 +1,117 @@
+// Минимальный пример: штатные ресурсы, два weapon_mod на одном native slot.
+// Необязательные настройки быстрого спауна для демонстрационного полигона.
+enlisted_player{
+  _override:b=yes
+  respawner__respTime:r=0.0
+  respawner__respTimeout:r=0.0
+  respawner__missionStartDelay:r=0.0
+  respawner__canRespawnWaitNumber:i=0
+  squads__respawnPenaltyTimeThreshold:r=0.0
+  squads__revivePointsAfterDeath:i=100
+}
+
+// Общая геометрия барабана в руках и на земле: только ресурс, маска и запрет анимации.
+ppd_slot_demo_drum_visual{
+  animchar__res:t="ppd_3438_char"
+  animchar__updatable:b=no
+  "disableDMParts:list<t>"{
+    part:t="weapon_mesh"
+    part:t="bolt_mesh"
+    part:t="selector_mesh"
+    part:t="trigger_mesh"
+    part:t="sight_mesh"
+    part:t="spring_mesh"
+    part:t="magazine_latch_mesh"
+  }
+}
+
+// Скрытый ППД-40 ДСЗ: два независимо выставленных модуля на bayonet-slot.
+// 1. Старый корпус: первый weapon_mod на реальном bayonet-slot.
+ppd_slot_demo_body_gunmod{
+  _use:t="weapon_mod"
+  _use:t="skeleton_attached"
+  animchar__res:t="ppd_3438_box_char"
+  animchar__updatable:b=no
+  slot_attach__calcAnim:b=no
+  slot_attach__visible:b=yes
+  animchar_render__enabled:b=yes
+  slot_attach__slotName:t="bayonet"
+  gunAttachable__slotName:t="bayonet"
+  gunAttachable__gunSlotName:t="legacy_body"
+  gunAttachable__slotTag:t="ppd_body"
+  slot_attach__rotTm:m=[[1, 0, 0] [0, 1, 0] [0, 0, 1] [-0.0004056990147, 0.587642312, -0.01586997509]]
+  "gunAttachable:tag"{}
+  "disableDMParts:list<t>"{
+    part:t="ammo_mesh"
+  }
+  "animchar_attach__overrideNodes:object"{
+    weaponRoot:t="hidden_carrier_keep_weaponRoot"
+    bolt_mesh:t="hidden_carrier_keep_bolt_mesh"
+    spring_mesh:t="hidden_carrier_keep_spring_mesh"
+  }
+}
+
+// 2. Общие настройки крепления наследуются от корпуса, видимость — от drum_visual.
+// Обычный барабан: второй weapon_mod на том же слоте, с другой матрицей.
+ppd_slot_demo_drum_gunmod{
+  _use:t="ppd_slot_demo_body_gunmod"
+  _use:t="ppd_slot_demo_drum_visual"
+  gunAttachable__gunSlotName:t="legacy_drum"
+  gunAttachable__slotTag:t="ppd_drum"
+  slot_attach__rotTm:m=[[-1, 2.97590077e-08, -3.023737927e-09] [4.335003023e-09, 0.04416192323, -0.9990243912] [-2.959643908e-08, -0.9990243912, -0.04416192323] [-0.0004056996841, 0.5852726698, -0.02781629004]]
+  "animchar_attach__overrideNodes:object"{
+    weaponRoot:t="hidden_carrier_keep_weaponRoot"
+    ammo_mesh:t="hidden_carrier_keep_ammo_mesh"
+  }
+}
+
+// 3. Отдельный frozen-декоратор используется только у лежащего предмета.
+ppd_slot_demo_ground_drum{
+  _use:t="base_vehicle_decor"
+  _use:t="disable_update"
+  _use:t="ppd_slot_demo_drum_visual"
+}
+
+// 4. В руках: активный ДСЗ-носитель со всеми скрытыми мешами и двумя gunMods.
+ppd_slot_demo_gun{
+  _use:t="ppd_3438_gun"
+  _use:t="animchar_with_attaches"
+  _use:t="skeleton_attached"
+  item__template:t="ppd_slot_demo_gun_item"
+  item__weapTemplate:t="ppd_slot_demo_gun"
+  animchar__res:t="ppd_3438_dv_char"
+  skeleton_attach__postfixIdx:i=3438
+  "disableDMParts:list<t>"{
+    part:t="ammo_mesh"
+    part:t="bolt_mesh"
+    part:t="spring_mesh"
+    part:t="weapon_mesh"
+  }
+  "gun_mods__slots:object"{
+    "legacy_body:object"{ ppd_body:t="ppd_slot_demo_body_gunmod" }
+    "legacy_drum:object"{ ppd_drum:t="ppd_slot_demo_drum_gunmod" }
+  }
+}
+
+// 5. Предмет в мире: устанавливает оба модуля через customProps при подборе.
+ppd_slot_demo_gun_item{
+  _use:t="ppd_3438_gun_item"
+  item__template:t="ppd_slot_demo_gun_item"
+  item__weapTemplate:t="ppd_slot_demo_gun"
+  animchar__res:t="ppd_3438_box_char"
+  "disableDMParts:list<t>"{
+    part:t="ammo_mesh"
+  }
+  "customProps:object"{
+    "gunMods:object"{ legacy_body:t="ppd_body" legacy_drum:t="ppd_drum" }
+  }
+  "attach_decorators__entities:list<eid>"{}
+  "attach_decorators__templates:array"{
+    "templates:object"{
+      template:t="ppd_slot_demo_ground_drum"
+      nodeName:t="ammo"
+      swapYZ:b=no
+      relativeTm:m=[[0, 1, 0] [0, 0, 1] [-1, 0, 0] [-0.2165098554, 0, 0.06849085477]]
+    }
+  }
+}
