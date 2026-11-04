@@ -30,6 +30,8 @@ ppd_slot_demo_drum_visual{
 ppd_slot_demo_body_gunmod{
   _use:t="weapon_mod"
   _use:t="skeleton_attached"
+  // drop_gun сохраняет модуль при выбросе, если у него задан item__template.
+  item__template:t="ppd_slot_demo_body_gunmod"
   animchar__res:t="ppd_3438_box_char"
   animchar__updatable:b=no
   slot_attach__calcAnim:b=no
@@ -40,10 +42,12 @@ ppd_slot_demo_body_gunmod{
   "disableDMParts:list<t>"{
     part:t="ammo_mesh"
   }
+  // У ДСЗ нет keep_local: корень и эти меши сохраняют локальные трансформации.
   "animchar_attach__overrideNodes:object"{
-    weaponRoot:t="hidden_carrier_keep_weaponRoot"
-    bolt_mesh:t="hidden_carrier_keep_bolt_mesh"
-    spring_mesh:t="hidden_carrier_keep_spring_mesh"
+    weaponRoot:t="keep_local"
+    bolt_mesh:t="keep_local"
+    spring_mesh:t="keep_local"
+    ammo_mesh:t="keep_local"
   }
 }
 
@@ -52,13 +56,10 @@ ppd_slot_demo_body_gunmod{
 ppd_slot_demo_drum_gunmod{
   _use:t="ppd_slot_demo_body_gunmod"
   _use:t="ppd_slot_demo_drum_visual"
+  item__template:t="ppd_slot_demo_drum_gunmod"
   gunAttachable__gunSlotName:t="legacy_drum"
   gunAttachable__slotTag:t="ppd_drum"
   slot_attach__rotTm:m=[[-1, 2.97590077e-08, -3.023737927e-09] [4.335003023e-09, 0.04416192323, -0.9990243912] [-2.959643908e-08, -0.9990243912, -0.04416192323] [-0.0004056996841, 0.5852726698, -0.02781629004]]
-  "animchar_attach__overrideNodes:object"{
-    weaponRoot:t="hidden_carrier_keep_weaponRoot"
-    ammo_mesh:t="hidden_carrier_keep_ammo_mesh"
-  }
 }
 
 // 3. Отдельный frozen-декоратор используется только у лежащего предмета.
